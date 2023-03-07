@@ -4,6 +4,16 @@ module Display
     
   HEREDOC
 
+  def board_state
+    @word.chars.map do |char|
+      if @used_letters.include?(char)
+        char
+      else
+        "_"
+      end
+    end.join(" ")
+  end
+
   def guesses_remaining(guesses_left)
     case guesses_left
     when 6
