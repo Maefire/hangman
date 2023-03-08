@@ -2,8 +2,19 @@ module Display
   GREETING = <<~HEREDOC
     welcome to Hangman. This is all sample text and place holders
     
+    Press the number corresponding to your option:
+
+    1. New Game
+
+    2. Load Game
   HEREDOC
 
+  SAVEDMESSAGE = <<~HEREDOC
+    Please select the file from the list below:
+
+
+
+  HEREDOC
   def board_state
     @word.chars.map do |char|
       if @used_letters.include?(char)
@@ -24,8 +35,8 @@ module Display
     ||
     ||
     ||
-    ||_________
-    ||\_-_-_-_-|
+    ||________
+    ||\_-_-_-_|
   )
     when 5
       %q{
