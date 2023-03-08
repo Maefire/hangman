@@ -19,10 +19,12 @@ class Game
     # end
     p @word
     loop do
-      p board_state
+      system("clear") || system("clr")
       puts "Guesses remaining: #{@guesses_left}"
+      puts "#{guesses_remaining(@guesses_left)}\n"
+      print "\t#{@used_letters.join(" ")}\n\n"
+      puts "\t#{board_state} \n\n"
       break if word_guessed?
-      print "#{@used_letters.join(" ")}\n\n\n"
       user_guess
       unless @word.include?(@guess) && @used_letters.include?(@guess) # letter guessed
         @guesses_left -= 1
@@ -37,9 +39,9 @@ class Game
 
   def user_guess
     @guess = gets.chomp.downcase.delete("^a-z").to_s
-    if @guess.length == 1 && !letter_available?(@guess)
+    if @guess.length == 1 && letter_available?(@guess)
       @used_letters << @guess
-    elsif letter_available?(@guess)
+    elsif !letter_available?(@guess)
       puts "Letter has been used. Please choose another letter."
       user_guess
     else
@@ -58,12 +60,8 @@ class Game
     end
   end
 
-  def to_s
-    "Word: #{@word},\n Used: #{@used_letters},\n Guess left: #{@guesses_left}"
-  end
-
   def letter_available?(guess)
-    @used_letters.include?(guess)
+    return true unless @used_letters.include?(guess)
   end
 
   def random_word_generation
