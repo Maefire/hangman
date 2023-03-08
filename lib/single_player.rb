@@ -5,13 +5,14 @@ class SinglePlayer
   include Display
   include GameLogic
 
+  attr_accessor :used_letters, :guesses_left, :word
+
+  # Usage: initializer(String, speed: Integer)
   def initialize
     @word = random_word_generation
     @used_letters = []
     @guesses_left = 6
     @guess = nil
-    # GREETING
-    game_loop
   end
 
   def game_loop
@@ -20,7 +21,8 @@ class SinglePlayer
     # end
     p @word
     loop do
-      system("clear") || system("clr")
+      break if @guess == "save"
+      # system("clear") || system("clr")
       puts "Guesses remaining: #{@guesses_left}"
       puts "#{guesses_remaining(@guesses_left)}\n"
       print "\t#{@used_letters.join(" ")}\n\n"
