@@ -48,14 +48,14 @@ module GameLogic
     File.readlines("dictionary.txt").sample.chomp
   end
 
+  # saves game with incrementing file numbers. Dumps the information
+  # into a .yaml.
   def save_game
     Dir.mkdir("output") unless Dir.exist?("output")
-
     save_number = 1
     while File.exist?("output/save_#{save_number}.yaml")
       save_number += 1
     end
-
     file_name = "output/save_#{save_number}.yaml"
     game_state = {
       "word" => @word,
@@ -69,8 +69,7 @@ module GameLogic
     try_again?
   end
 
-  # if you want to load a non single player game, when implemented
-  # you will have to modify this to check game type first, then instantiate it.
+  # loads a game, deletes original save file, then runs the game loop
   def load_game(save_number)
     file_name = "output/save_#{save_number}.yaml"
     puts game_state = YAML.safe_load(File.read(file_name))
@@ -78,10 +77,12 @@ module GameLogic
     game.word = game_state["word"]
     game.used_letters = game_state["used_letters"]
     game.guesses_left = game_state["guesses_left"]
+    File.delete(file_name)
     game.game_loop
     game
   end
 
+  # lists all saved games, numbers them, and shows the modification date.
   def saved_game_list
     puts SAVEDMESSAGE
     save_files = Dir.glob("output/save_*.yaml")
@@ -92,8 +93,8 @@ module GameLogic
       save_files.each do |file|
         file_id = File.basename(file)[/\d/]
         file_name = File.basename(file, ".yaml")
-        file_time = File.mtime(file).strftime("%d-%m-%Y")
-        puts "#{file_id}:\t\"#{file_name}\" creation time: #{file_time}"
+        file_time = File.mtime(file).strftime("%d-%m-%Y at %R")
+        puts "#{file_id}:\t\"#{file_name}\" created: #{file_time}"
       end
     end
     user_choice = gets.chomp
