@@ -1,8 +1,15 @@
 require "yaml"
 require_relative "display"
 
+# #################################################################### #
+# ######   This is where all the magic happens.                 ###### #
+# ######   User input, game save/load, guess randomly generated,###### #
+# ######   win condition checks, etc...                         ###### #
+########################################################################
 module GameLogic
   include Display
+
+  # get user input
   def user_guess
     puts "Take a guess or enter \"save\" to save your current game."
     @guess = gets.chomp.delete("^a-z").downcase.to_s
@@ -19,6 +26,7 @@ module GameLogic
     end
   end
 
+  # checks for game over
   def word_guessed?
     if @word.chars.all? { |char| @used_letters.include?(char) }
       puts "Congratulations! You win!"
@@ -29,10 +37,12 @@ module GameLogic
     end
   end
 
+  # checks for availability of letter
   def letter_available?(guess)
     return true unless @used_letters.include?(guess)
   end
 
+  # Check if player wants to continue a new game, or quit
   def try_again?
     puts 'New Game? Enter "Y" to continue, or any other key to quit.'
     new_game = gets.chomp.downcase
@@ -44,6 +54,7 @@ module GameLogic
     true
   end
 
+  # loads dictionary, then randomly samples a word - the \n
   def random_word_generation
     File.readlines("dictionary.txt").sample.chomp
   end

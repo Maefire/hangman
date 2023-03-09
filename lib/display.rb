@@ -24,6 +24,8 @@ module Display
 
 
   HEREDOC
+
+  # generates board on each loop, showing correct letter or if unknown, it shows "_"
   def board_state
     @word.chars.map do |char|
       if @used_letters.include?(char)
@@ -34,6 +36,7 @@ module Display
     end.join(" ")
   end
 
+  # ASCII art is a pain. I'd pay to have someone else do it.
   def guesses_remaining(guesses_left)
     case guesses_left
     when 6

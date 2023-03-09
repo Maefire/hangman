@@ -7,7 +7,7 @@ class SinglePlayer
 
   attr_accessor :used_letters, :guesses_left, :word
 
-  # Usage: initializer(String, speed: Integer)
+  # constructor is "overwritten" when game loaded
   def initialize
     @word = random_word_generation
     @used_letters = []
@@ -15,14 +15,11 @@ class SinglePlayer
     @guess = nil
   end
 
+  # self clears each loop for a clean look.
   def game_loop
-    # if save_exists? && (new_game != true)
-    #   load(save_number)
-    # end
-    p @word
     loop do
       break if @guess == "save"
-      # system("clear") || system("clr")
+      system("clear") || system("clr")
       puts "Guesses remaining: #{@guesses_left}"
       puts "#{guesses_remaining(@guesses_left)}\n"
       print "\t#{@used_letters.join(" ")}\n\n"
